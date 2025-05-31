@@ -49,28 +49,3 @@ const output = hourlyaggregated(data)
 console.log(JSON.stringify(output,null,2));
 
 // Task one Compleated
-
-// Question 2: Problem Solving – Implement Alert Feature
-// You’re building an alert module for the RMS platform. Create a simple backend API and logic
-// for this feature.
-// Problem Statement:
-// Generate an alert when:
-// - Power drops below 10W for more than 5 minutes
-// - Voltage goes above 270V
-// Deliverable:
-// - API to fetch current alerts for a given inverter
-// - Logic to scan incoming data stream and trigger alert conditions (mock data or hardcoded
-// simulation is fine)
-// - Design considerations if the volume is 10,000 inverters
-
-
-// Question 3: Database Design – RMS Data Storage
-// Design the database schema (SQL or NoSQL) for storing the following:
-// - Inverter details
-// - Per-minute telemetry
-// - Alerts
-// - User (plant owner, installer) access control
-// Deliverable:
-// - ERD or table structure
-// - Indexing and partitioning strategy for scale (100k inverters, 1-year data)
-// - Justify choice of DB (e.g., TimescaleDB, MongoDB, PostgreSQL)

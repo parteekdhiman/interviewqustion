@@ -1,31 +1,32 @@
-const alerts = {}; 
-const data = {}; 
+const alerts = {};  
+const dataStore = {}; 
 
-function ingestData(inverterId, power, voltege) {
+function ingestData(inverterId, power, voltage) {
   const now = Date.now();
-  if (!data[inverterId]) data[inverterId] = [];
-  data[inverterId].push({ power, voltege, timestamp: now });
+  if (!dataStore[inverterId]) dataStore[inverterId] = [];
+  dataStore[inverterId].push({ power, voltage, timestamp: now });
 
-  // Keep last 10 minutes data
-  data[inverterId] = data[inverterId].filter(d => d.timestamp > now - 10 * 60 * 1000);
+  dataStore[inverterId] = dataStore[inverterId].filter(d => d.timestamp > now - 10 * 60 * 1000);
 
-  alerts(inverterId);
+  checkAlerts(inverterId);
 }
 
-function alerts(inverterId) {
-  const data = data[inverterId];
+function checkAlerts(inverterId) {
+  const data = dataStore[inverterId];
   if (!data) return;
 
   const now = Date.now();
   const latest = data[data.length - 1];
-  if (latest.voltege > 270) {
-    triggerAlert(inverterId, "high", "voltege exceeded 270V");
+
+  if (latest.voltage > 270) {
+    triggerAlert(inverterId, "high", "Voltage exceeded 270V");
   } else {
     resolveAlert(inverterId, "high");
   }
-  const MinsAgo = now - 5 * 60 * 1000;
-  const recent = data.filter(d => d.timestamp >= MinsAgo);
-  const lowPower = recent.length && recent.every(d => d.power < 10);
+
+  const fiveMinsAgo = now - 5 * 60 * 1000;
+  const recentData = data.filter(d => d.timestamp >= fiveMinsAgo);
+  const lowPower = recentData.length && recentData.every(d => d.power < 10);
 
   if (lowPower) {
     triggerAlert(inverterId, "low", "Power below 10W for over 5 minutes");
